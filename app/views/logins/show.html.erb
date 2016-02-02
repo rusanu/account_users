@@ -1,0 +1,26 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-8 col-sm-offset-2">
+      <%= bootstrap_form_for(@login_presenter,
+        :method => :post,
+        :layout => :horizontal, 
+        :label_col => "col-sm-3",
+        :control_col => "col-sm-9",
+        :role => "form") do |f| %>
+          <%= f.text_field :name, :placeholder => 'Email', :label => "Email" %>
+          <%= f.password_field :password, :placeholder => 'Password', :label => "Password"  %>
+          <%= f.form_group do %>
+            <%= f.primary "Login" %>
+          <% end %>
+          <%= f.form_group do %>
+            <small class="text-muted">I forgot my password  
+              <%= link_to login_request_reset_path do %> 
+                <span class="glyphicon glyphicon-circle-arrow-right"></span>
+              <% end %>
+            </small>
+          <% end %>
+      <% end %>
+      </div>
+    </div>
+  </div>
+</div>

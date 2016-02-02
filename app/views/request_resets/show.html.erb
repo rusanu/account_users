@@ -1,0 +1,18 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-8 col-sm-offset-2">
+      <%= bootstrap_form_for(@request_reset_presenter,
+        :method => :post,
+        :layout => :horizontal, 
+        :label_col => "col-sm-3",
+        :control_col => "col-sm-9",
+        :role => "form") do |f| %>
+          <%= f.text_field :email, :placeholder => 'you@address.com', :label => "Email" %>
+          <%= f.form_group do %>
+            <%= f.primary 'Request Password Reset' %>
+          <% end %>
+      <% end %>
+      </div>
+    </div>
+  </div>
+</div>

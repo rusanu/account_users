@@ -13,3 +13,6 @@ gemspec
 # To use a debugger
 # gem 'byebug', group: [:development, :test]
 
+gem 'bootstrap_form'
+gem 'active_presenter', path: '~/active_presenter'
+
