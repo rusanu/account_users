@@ -1,4 +1,4 @@
-class RequestResetsController < ::ApplicationController
+class RequestResetsController < AccountUsers::ControllerBase
   helper_method :request_reset_presenters_path
 
   def show

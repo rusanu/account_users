@@ -1,4 +1,4 @@
-class SignupsController < ::ApplicationController
+class SignupsController < AccountUsers::ControllerBase
   helper_method :signup_presenters_path, :terms_of_service_path
 
   def show

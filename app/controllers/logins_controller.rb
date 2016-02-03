@@ -1,4 +1,4 @@
-class LoginsController < ::ApplicationController
+class LoginsController < AccountUsers::ControllerBase
   helper_method :login_presenters_path, :login_request_reset_path
 
   def show
@@ -15,6 +15,7 @@ class LoginsController < ::ApplicationController
       AccountUsers.call_login_user session, user
       redirect_to AccountUsers.login_success_redirect_path
     else
+      @login_presenter.errors.add :name, "Invalid user name or password mismatch" if @login_presenter.valid?
       AccountUsers.call_logout_user session
       render action: :show, status: :conflict
     end

@@ -1,6 +1,6 @@
 require 'base64'
 
-class ValidationTokenController < ::ApplicationController
+class ValidationTokenController < AccountUsers::ControllerBase
   helper_method :reset_password_presenters_path
   before_filter :find_token
 
