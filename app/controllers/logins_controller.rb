@@ -1,5 +1,6 @@
 class LoginsController < AccountUsers::ControllerBase
   helper_method :login_presenters_path, :login_request_reset_path
+  respond_to :html, :json, :xml
 
   def show
     @login_presenter = LoginPresenter.new
@@ -9,15 +10,22 @@ class LoginsController < AccountUsers::ControllerBase
     @login_presenter = LoginPresenter.new params_permit
     user = nil
     if @login_presenter.valid?
-      user = User.user_lookup @login_presenter.name
+      user = User.user_lookup @login_presenter.user_name
     end
     if (user && user.is_password_match?(@login_presenter.password))
-      AccountUsers.call_login_user session, user
-      redirect_to AccountUsers.login_success_redirect_path
+      account = AccountUsers.call_login_user session, user
+      @login_presenter.account_name = account.name
+      respond_to do |format|
+        format.html {redirect_to AccountUsers.login_success_redirect_path}
+        format.any(:json, :xml) {render 'login_success'}
+      end
     else
-      @login_presenter.errors.add :name, "Invalid user name or password mismatch" if @login_presenter.valid?
       AccountUsers.call_logout_user session
-      render action: :show, status: :conflict
+      @login_presenter.errors.add :user_name, "Invalid user name or password mismatch" if @login_presenter.valid?
+      respond_to do |format|
+        format.html {render action: :show, status: :conflict}
+        format.any(:json, :xml) {render 'login_failure', status: :unauthorized}
+      end
     end
   end
 
@@ -38,7 +46,7 @@ class LoginsController < AccountUsers::ControllerBase
 
   def params_permit
     params.fetch(:login_presenter, {}).permit(
-      :name,
+      :user_name,
       :password)
   end
 

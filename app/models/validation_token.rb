@@ -7,6 +7,7 @@ class ValidationToken < ActiveRecord::Base
 
   TOKEN_CATEGORY_EMAIL_CONFIRMATION = 1
   TOKEN_CATEGORY_PASSWORD_RESET = 2
+  TOKEN_CATEGORY_INVITATION = 3
 
   def self.find_token(token)
     begin
@@ -23,6 +24,10 @@ class ValidationToken < ActiveRecord::Base
 
   def is_confirm_email?
     self.category == TOKEN_CATEGORY_EMAIL_CONFIRMATION
+  end
+
+  def is_invitation?
+    self.category == TOKEN_CATEGORY_INVITATION
   end
 
   def to_param

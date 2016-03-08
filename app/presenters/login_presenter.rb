@@ -3,8 +3,8 @@ class LoginPresenter
   include ActiveModel::AttributeMethods
   include ActiveModel::Translation
 
-  attr_accessor :name, :password
+  attr_accessor :user_name, :password, :account_name
 
-  validates :name, presence: true
+  validates :user_name, presence: true
   validates :password, presence: true
 end

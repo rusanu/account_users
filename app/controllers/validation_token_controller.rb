@@ -2,7 +2,7 @@ require 'base64'
 
 class ValidationTokenController < AccountUsers::ControllerBase
   helper_method :reset_password_presenters_path
-  before_filter :find_token
+  before_action :find_token
 
   def show
     if @token.is_reset_password?
