@@ -42,6 +42,10 @@ class ValidationToken < ActiveRecord::Base
     AccountUsers::Engine.routes.url_helpers.validation_token_url(self)
   end
 
+  def path
+    AccountUsers::Engine.routes.url_helpers.validation_token_path(self)
+  end
+  
   def self.confirm_email(user)
     token = SecureRandom.hex AccountUsers.validation_token_size
     self.create(user: user, 
@@ -53,6 +57,13 @@ class ValidationToken < ActiveRecord::Base
     token = SecureRandom.hex AccountUsers.validation_token_size
     self.create(user: user, 
       category: TOKEN_CATEGORY_PASSWORD_RESET,
+      token: token)
+  end
+
+  def self.invite_user(user)
+    token = SecureRandom.hex AccountUsers.validation_token_size
+    self.create(user: user, 
+      category: TOKEN_CATEGORY_INVITATION,
       token: token)
   end
 

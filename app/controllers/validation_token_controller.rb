@@ -12,6 +12,8 @@ class ValidationTokenController < AccountUsers::ControllerBase
       @token.user.is_email_confirmed = true
       @token.user.save!
       render :confirm_email
+    elsif @token.is_invitation?
+      render :confirm_invitation
     end
   end
 

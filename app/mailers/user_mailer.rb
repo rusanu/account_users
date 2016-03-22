@@ -13,4 +13,11 @@ class UserMailer < ActionMailer::Base
     @user = user
     mail(to: @user.email, subject: 'Password reset request')
   end
+
+  def invite_user(account, user, token)
+    @url = token.url
+    @user = user
+    @account = account
+    mail(to: @user.email, subject: "Invitation to DBHistory.com account #{account.name}")
+  end
 end

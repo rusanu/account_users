@@ -11,6 +11,8 @@ class User < ActiveRecord::Base
 
   USER_FLAGS_EMAIL_CONFIRMED = 0x01
 
+  USER_STATUS_PROVISIONAL_INVITED = 0x01
+
   scope :all_for_account, lambda {|account|
     joins(:account_user_roles).where('account_user_roles.account_id = ?',account.id)
   }
