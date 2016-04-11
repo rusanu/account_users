@@ -18,6 +18,7 @@ class ValidationToken < ActiveRecord::Base
         Rails.logger.error "usrlsafe_decode64: #{token}: #{e.class}: #{e.message}"
       end
       if decoded.nil?
+        # Is possible the mail client has stripped the terminal '=' or '=='
         begin
           decoded  = Base64.decode64(token)
         rescue Exception => e
