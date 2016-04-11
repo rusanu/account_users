@@ -11,7 +11,23 @@ class ValidationToken < ActiveRecord::Base
 
   def self.find_token(token)
     begin
-      self.where(token: Base64.urlsafe_decode64(token)).first
+      decoded = nil
+      begin
+        decoded  = Base64.urlsafe_decode64(token)
+      rescue Exception => e
+        Rails.logger.error "usrlsafe_decode64: #{token}: #{e.class}: #{e.message}"
+      end
+      if decoded.nil?
+        begin
+          decoded  = Base64.decode64(token)
+        rescue Exception => e
+          Rails.logger.error "decode64: #{token}: #{e.class}: #{e.message}"
+        end
+      end
+      if (decoded.nil?)
+        return nil
+      end
+      self.where(token: decoded).first
     rescue Exception => e
       Rails.logger.error "ValidationToken.find_token: #{e.class} #{e.message}"
       nil
