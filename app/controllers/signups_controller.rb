@@ -12,7 +12,7 @@ class SignupsController < AccountUsers::ControllerBase
     else
       AccountUsers.account_provision.call @signup_presenter.account, @signup_presenter.user
       AccountUsers.call_login_user session, @signup_presenter.user
-      redirect_to AccountUsers.login_success_redirect_path
+      redirect_to AccountUsers.login_success_redirect_path, flash: {new_account: true}
     end
   end
 
