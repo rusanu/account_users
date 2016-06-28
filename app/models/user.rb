@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
   has_many :account_user_roles
 
   validates :name, presence: true, uniqueness: {case_sensitive: false}, on: :create
-  validates :email, uniqueness: {case_sensitive: false}, allow_nil: true, on: :create
+  validates :email, uniqueness: {case_sensitive: false}, allow_nil: true, on: :create, email: :true
   validates :password, presence: true, confirmation: true, if: :password_changed?
 
   before_save :digest_password_hash!, if: :password_changed?

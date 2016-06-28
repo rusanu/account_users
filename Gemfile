@@ -15,4 +15,4 @@ gemspec
 
 gem 'bootstrap_form'
 gem 'active_presenter', path: '~/active_presenter'
-
+gem 'email_validator'
