@@ -1,6 +1,8 @@
 class LoginsController < AccountUsers::ControllerBase
   helper_method :login_presenters_path, :login_request_reset_path
-  respond_to :html, :json, :xml
+  
+  # TODO: fix respond_to for rails 5.rc2+ (moved to gem 'responders')
+  #respond_to :html, :json, :xml
 
   def show
     @login_presenter = LoginPresenter.new
