@@ -2,8 +2,8 @@ require 'securerandom'
 require 'base64'
 
 class ValidationToken < ActiveRecord::Base
-  belongs_to :account
-  belongs_to :user
+  belongs_to :account, optional: true
+  belongs_to :user, optional: true
 
   TOKEN_CATEGORY_EMAIL_CONFIRMATION = 1
   TOKEN_CATEGORY_PASSWORD_RESET = 2
