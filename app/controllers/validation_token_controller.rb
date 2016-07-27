@@ -1,16 +1,24 @@
 require 'base64'
 
 class ValidationTokenController < AccountUsers::ControllerBase
+  include ActiveSupport::Callbacks
   helper_method :reset_password_presenters_path
   before_action :find_token
+  define_callbacks :confirm_user_email
 
   def show
+    # Any link that is clicked is actually a valid user email confirmation
+    if !@token.user.nil? && !@token.user.is_email_confirmed?
+      run_callbacks :confirm_user_email do
+        @token.user.is_email_confirmed = true
+        @token.user.save!
+      end
+    end
+
     if @token.is_reset_password?
       @reset_password_presenter = ResetPasswordPresenter.new
       render :reset_password
     elsif @token.is_confirm_email?
-      @token.user.is_email_confirmed = true
-      @token.user.save!
       render :confirm_email
     elsif @token.is_invitation?
       render :confirm_invitation
