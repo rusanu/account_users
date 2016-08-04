@@ -8,10 +8,14 @@ class ValidationTokenController < AccountUsers::ControllerBase
 
   def show
     # Any link that is clicked is actually a valid user email confirmation
-    if !@token.user.nil? && !@token.user.is_email_confirmed?
-      run_callbacks :confirm_user_email do
-        @token.user.is_email_confirmed = true
-        @token.user.save!
+    if !@token.user.nil?
+      User.transaction do
+        run_callbacks :confirm_user_email do
+          if !@token.user.is_email_confirmed?
+            @token.user.is_email_confirmed = true
+            @token.user.save!
+          end
+        end
       end
     end
 

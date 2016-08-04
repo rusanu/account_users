@@ -63,12 +63,15 @@ class ValidationToken < ActiveRecord::Base
     AccountUsers::Engine.routes.url_helpers.validation_token_path(self)
   end
   
-  def self.confirm_email(user)
+  def self.confirm_email(user, force_new = false)
+    last = self.where(user_id: user.id).where(category: TOKEN_CATEGORY_EMAIL_CONFIRMATION).last unless force_new
+    return last unless last.nil?
     token = SecureRandom.hex AccountUsers.validation_token_size
     self.create(user: user, 
       category: TOKEN_CATEGORY_EMAIL_CONFIRMATION,
       token: token)
   end
+
 
   def self.reset_password(user)
     token = SecureRandom.hex AccountUsers.validation_token_size
