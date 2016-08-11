@@ -1,5 +1,8 @@
 class SignupsController < AccountUsers::ControllerBase
+  include ActiveSupport::Callbacks
   helper_method :signup_presenters_path, :terms_of_service_path
+
+  define_callbacks :create_account
 
   def show
     @signup_presenter = SignupPresenter.new
@@ -7,12 +10,14 @@ class SignupsController < AccountUsers::ControllerBase
 
   def create
     @signup_presenter = SignupPresenter.new params_permit
-    if (!@signup_presenter.save)
-      render action: :show, status: :conflict
-    else
-      AccountUsers.account_provision.call @signup_presenter.account, @signup_presenter.user
-      AccountUsers.call_login_user session, @signup_presenter.user
-      redirect_to AccountUsers.login_success_redirect_path, flash: {new_account: true}
+    run_callbacks :create_account do
+      if (!@signup_presenter.save)
+        render action: :show, status: :conflict
+      else
+        AccountUsers.account_provision.call @signup_presenter.account, @signup_presenter.user
+        AccountUsers.call_login_user session, @signup_presenter.user
+        redirect_to AccountUsers.login_success_redirect_path, flash: {new_account: true}
+      end
     end
   end
 
